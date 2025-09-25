@@ -1,0 +1,27 @@
+{
+  "name": "s3-file-resource-lambda",
+  "version": "1.0.0",
+  "description": "Lambda function for S3 file operations (read, write, list, delete)",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js",
+    "zip": "zip -r function.zip index.js node_modules package.json"
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "s3",
+    "file-operations"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.650.0"
+  },
+  "devDependencies": {
+    "aws-sdk-client-mock": "^4.0.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
