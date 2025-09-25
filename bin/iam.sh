@@ -4,11 +4,11 @@ set -euo pipefail
 
 export $(cat .env | xargs)
 
-pushd $PWD/terraform/s3/lambda-packages
+pushd $PWD/terraform/iam
 
     terraform fmt
     terraform init -backend-config="envs/${ENVIRONMENT}.hcl"
     terraform plan 
-    terraform apply -auto-approve
+    #terraform apply -auto-approve
 
 popd 
