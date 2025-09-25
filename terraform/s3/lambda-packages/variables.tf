@@ -1,7 +1,25 @@
+variable "region" {
+  description = "The AWS region to create the S3 bucket in."
+  type        = string
+  default     = "eu-west-1"
+}
+
+variable "environment" {
+  description = "The environment for the S3 bucket (e.g., dev, prod)."
+  type        = string
+  default     = "dev"
+}
+
+variable "prefix" {
+  description = "The prefix for the S3 bucket (e.g., dev, prod)."
+  type        = string
+  default     = "si-iac"
+}
+
 variable "bucket_name" {
   description = "The name of the S3 bucket."
   type        = string
-  default     = "si-iac-terraform-state"
+  default     = "lambda-packages"
 }
 
 variable "force_destroy" {
@@ -19,8 +37,8 @@ variable "versioning_enabled" {
 variable "tags" {
   description = "A map of tags to assign to the bucket."
   type        = map(string)
-  default     = {
-    Company = "strategic-imperatives"
+  default = {
+    Company     = "strategic-imperatives"
     Environment = "dev"
     ManagedBy   = "terraform"
   }
