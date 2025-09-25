@@ -23,6 +23,3 @@ module "s3_bucket" {
 
   tags = var.tags
 }
-
-# Access control is handled via IAM group policies in the iam module
-# S3 bucket policies don't support IAM groups as principals directly

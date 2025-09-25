@@ -40,11 +40,3 @@ resource "aws_lambda_function" "lambda" {
     ignore_changes = [s3_key] # Prevents recreation on code updates
   }
 }
-
-output "lambda_function_name" {
-  value = aws_lambda_function.lambda.function_name
-}
-
-output "lambda_function_arn" {
-  value = aws_lambda_function.lambda.arn
-}
