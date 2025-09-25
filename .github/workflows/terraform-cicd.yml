@@ -1,0 +1,145 @@
+name: Terraform CI/CD Pipeline
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'terraform/**'
+      - 'src/**'
+      - 'bin/**'
+      - '.env.example'
+  push:
+    branches: [ main ]
+    paths:
+      - 'terraform/**'
+      - 'src/**'
+      - 'bin/**'
+      - '.env.example'
+  release:
+    types: [ created ]
+
+env:
+  AWS_DEFAULT_REGION: eu-west-2
+
+jobs:
+  terraform-validate-and-plan:
+    name: Terraform Validate and Plan
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ~1.0
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+    
+    - name: Setup environment file
+      run: |
+        cp .env.example .env
+        sed -i "s/todo/${{ secrets.AWS_ACCOUNT_ID }}/g" .env
+        sed -i "s/AWS_ACCESS_KEY_ID=todo/AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}/g" .env
+        sed -i "s/AWS_SECRET_ACCESS_KEY=todo/AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}/g" .env
+    
+    - name: Run Terraform validate and plan
+      run: |
+        chmod +x bin/all-plan.sh
+        ./bin/all-plan.sh
+
+  deploy-dev:
+    name: Deploy to Development
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: development
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ~1.0
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+    
+    - name: Setup environment file
+      run: |
+        cp .env.example .env
+        sed -i "s/todo/${{ secrets.AWS_ACCOUNT_ID }}/g" .env
+        sed -i "s/AWS_ACCESS_KEY_ID=todo/AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}/g" .env
+        sed -i "s/AWS_SECRET_ACCESS_KEY=todo/AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}/g" .env
+    
+    - name: Install Lambda dependencies
+      run: |
+        cd src/authoriser && npm install
+        cd ../s3-files && npm install
+    
+    - name: Deploy to development
+      run: |
+        chmod +x bin/all-create.sh
+        ./bin/all-create.sh
+
+  deploy-prod:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'created'
+    environment: production
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ~1.0
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_PROD }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+    
+    - name: Setup environment file for production
+      run: |
+        cp .env.example .env
+        sed -i "s/dev/prod/g" .env
+        sed -i "s/todo/${{ secrets.AWS_ACCOUNT_ID_PROD }}/g" .env
+        sed -i "s/AWS_ACCESS_KEY_ID=todo/AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID_PROD }}/g" .env
+        sed -i "s/AWS_SECRET_ACCESS_KEY=todo/AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }}/g" .env
+    
+    - name: Install Lambda dependencies
+      run: |
+        cd src/authoriser && npm install
+        cd ../s3-files && npm install
+    
+    - name: Deploy to production
+      run: |
+        chmod +x bin/all-create-prod.sh
+        ./bin/all-create-prod.sh

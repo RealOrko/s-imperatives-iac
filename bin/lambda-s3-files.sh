@@ -16,11 +16,16 @@ pushd $PWD/terraform/lambda/s3-files
         terraform init -backend-config="envs/${ENVIRONMENT}.hcl"
     fi
     
+    if [ "${1:-}" = "plan" ]; then
+        terraform plan
+    fi 
+
+    if [ "${1:-}" = "apply" ]; then
+        terraform apply -auto-approve
+    fi 
+
     if [ "${1:-}" = "destroy" ]; then
         terraform destroy -auto-approve
-    else
-        terraform plan 
-        terraform apply -auto-approve
-    fi
+    fi 
 
 popd 

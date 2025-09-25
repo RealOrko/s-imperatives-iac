@@ -27,12 +27,12 @@ S3_BUCKET_NAME=your-s3-bucket-name
 
 ### Main Orchestration Scripts
 
-#### `all-create.sh`
+#### `all-apply.sh`
 **Purpose**: Complete infrastructure deployment in correct dependency order
 
 **Usage**:
 ```bash
-./bin/all-create.sh
+./bin/all-apply.sh
 ```
 
 **Deployment Order**:

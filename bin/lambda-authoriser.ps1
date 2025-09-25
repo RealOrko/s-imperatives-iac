@@ -44,7 +44,7 @@ try {
         Remove-Item $lambdaCodePath -Recurse -Force
     }
     
-    # Create lambda_code directory
+    # New lambda_code directory
     New-Item -ItemType Directory -Path $lambdaCodePath -Force | Out-Null
     
     # Copy source files to lambda_code directory
