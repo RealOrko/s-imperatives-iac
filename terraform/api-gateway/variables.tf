@@ -45,3 +45,65 @@ variable "throttling_burst_limit" {
   type        = number
   default     = 50
 }
+
+variable "api_routes" {
+  description = "Map of API routes and their configurations"
+  type = map(object({
+    integration_type    = string
+    integration_method  = string
+    lambda_function_key = string # Key to reference the lambda function from remote state
+    routes = list(object({
+      method = string
+      path   = string
+    }))
+    timeout_milliseconds   = optional(number, 12000)
+    payload_format_version = optional(string, "2.0")
+    authorization_type     = optional(string, "CUSTOM")
+    use_authorizer         = optional(bool, true)
+  }))
+  default = {
+    s3_files = {
+      integration_type       = "AWS_PROXY"
+      integration_method     = "POST"
+      lambda_function_key    = "lambda_s3_files"
+      timeout_milliseconds   = 12000
+      payload_format_version = "2.0"
+      authorization_type     = "CUSTOM"
+      use_authorizer         = true
+      routes = [
+        {
+          method = "GET"
+          path   = "/s3-files"
+        },
+        {
+          method = "POST"
+          path   = "/s3-files"
+        },
+        {
+          method = "PUT"
+          path   = "/s3-files"
+        },
+        {
+          method = "DELETE"
+          path   = "/s3-files"
+        },
+        {
+          method = "GET"
+          path   = "/s3-files/{proxy+}"
+        },
+        {
+          method = "POST"
+          path   = "/s3-files/{proxy+}"
+        },
+        {
+          method = "PUT"
+          path   = "/s3-files/{proxy+}"
+        },
+        {
+          method = "DELETE"
+          path   = "/s3-files/{proxy+}"
+        }
+      ]
+    }
+  }
+}

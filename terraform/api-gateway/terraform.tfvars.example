@@ -1,0 +1,116 @@
+# Example: terraform.tfvars
+# 
+# This file shows how to customize the API routes using the new variable structure.
+# Copy this to terraform.tfvars in the api-gateway directory and modify as needed.
+
+# Basic configuration
+region      = "us-east-1"
+environment = "dev"
+prefix      = "my-app"
+
+# Custom domain (optional)
+domain_name     = "api.example.com"
+certificate_arn = "arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012"
+
+# API Routes Configuration
+# This map structure allows you to define multiple integrations and their routes
+api_routes = {
+  # S3 Files Service
+  s3_files = {
+    integration_type        = "AWS_PROXY"
+    integration_method      = "POST"
+    lambda_function_key     = "lambda_s3_files"
+    timeout_milliseconds    = 12000
+    payload_format_version  = "2.0"
+    authorization_type      = "CUSTOM"
+    use_authorizer         = true
+    routes = [
+      {
+        method = "GET"
+        path   = "/s3-files"
+      },
+      {
+        method = "POST"
+        path   = "/s3-files"
+      },
+      {
+        method = "PUT"
+        path   = "/s3-files"
+      },
+      {
+        method = "DELETE"
+        path   = "/s3-files"
+      },
+      {
+        method = "GET"
+        path   = "/s3-files/{proxy+}"
+      },
+      {
+        method = "POST"
+        path   = "/s3-files/{proxy+}"
+      },
+      {
+        method = "PUT"
+        path   = "/s3-files/{proxy+}"
+      },
+      {
+        method = "DELETE"
+        path   = "/s3-files/{proxy+}"
+      }
+    ]
+  }
+  
+  # Example: Additional service (uncomment and modify as needed)
+  # user_service = {
+  #   integration_type        = "AWS_PROXY"
+  #   integration_method      = "POST"
+  #   lambda_function_key     = "lambda_user_service"  # Reference to remote state
+  #   timeout_milliseconds    = 15000
+  #   payload_format_version  = "2.0"
+  #   authorization_type      = "CUSTOM"
+  #   use_authorizer         = true
+  #   routes = [
+  #     {
+  #       method = "GET"
+  #       path   = "/users"
+  #     },
+  #     {
+  #       method = "POST"
+  #       path   = "/users"
+  #     },
+  #     {
+  #       method = "GET"
+  #       path   = "/users/{id}"
+  #     },
+  #     {
+  #       method = "PUT"
+  #       path   = "/users/{id}"
+  #     },
+  #     {
+  #       method = "DELETE"
+  #       path   = "/users/{id}"
+  #     }
+  #   ]
+  # }
+  
+  # Example: Public endpoints (no authorization)
+  # health_check = {
+  #   integration_type        = "AWS_PROXY"
+  #   integration_method      = "POST"
+  #   lambda_function_key     = "lambda_health_check"
+  #   timeout_milliseconds    = 5000
+  #   payload_format_version  = "2.0"
+  #   authorization_type      = "NONE"
+  #   use_authorizer         = false
+  #   routes = [
+  #     {
+  #       method = "GET"
+  #       path   = "/health"
+  #     },
+  #     {
+  #       method = "GET"
+  #       path   = "/status"
+  #     }
+  #   ]
+  # }
+}

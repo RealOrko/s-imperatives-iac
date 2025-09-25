@@ -61,6 +61,69 @@ Remote state key:
 | `stage_name` | API Gateway stage name | string | `$default` |
 | `throttling_rate_limit` | API throttling rate limit | number | `100` |
 | `throttling_burst_limit` | API throttling burst limit | number | `50` |
+| `api_routes` | Map of API routes and integrations | map(object) | See below |
+
+### API Routes Configuration
+
+The `api_routes` variable allows you to define multiple Lambda integrations and their routes using a flexible map structure:
+
+```hcl
+api_routes = {
+  s3_files = {
+    integration_type        = "AWS_PROXY"
+    integration_method      = "POST"
+    lambda_function_key     = "lambda_s3_files"  # Remote state key
+    timeout_milliseconds    = 12000
+    payload_format_version  = "2.0"
+    authorization_type      = "CUSTOM"
+    use_authorizer         = true
+    routes = [
+      {
+        method = "GET"
+        path   = "/s3-files"
+      },
+      {
+        method = "POST"
+        path   = "/s3-files"
+      },
+      # ... more routes
+    ]
+  }
+  
+  # Add more integrations as needed
+  # user_service = { ... }
+}
+```
+
+#### Route Object Properties
+
+| Property | Description | Type | Default |
+|----------|-------------|------|---------|
+| `integration_type` | Integration type (AWS_PROXY, HTTP_PROXY, etc.) | string | Required |
+| `integration_method` | HTTP method for integration | string | Required |
+| `lambda_function_key` | Key to reference Lambda function from remote state | string | Required |
+| `routes` | List of route configurations | list(object) | Required |
+| `timeout_milliseconds` | Integration timeout | number | `12000` |
+| `payload_format_version` | Payload format version | string | `"2.0"` |
+| `authorization_type` | Authorization type (CUSTOM, NONE, etc.) | string | `"CUSTOM"` |
+| `use_authorizer` | Whether to use the Lambda authorizer | bool | `true` |
+
+#### Route Configuration
+
+Each route in the `routes` list supports:
+
+| Property | Description | Type |
+|----------|-------------|------|
+| `method` | HTTP method (GET, POST, PUT, DELETE, etc.) | string |
+| `path` | Route path (e.g., "/api/users", "/api/users/{id}") | string |
+
+### Benefits of the New Structure
+
+1. **Reduced Duplication**: Single resource definitions with `for_each`
+2. **Flexible Configuration**: Easy to add new services and routes
+3. **Maintainable**: Centralized route configuration
+4. **Scalable**: Supports multiple Lambda integrations
+5. **Type Safety**: Terraform variable validation
 
 ### Environment Configuration
 
