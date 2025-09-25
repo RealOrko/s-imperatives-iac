@@ -32,3 +32,29 @@ output "authorizer_id" {
   description = "The ID of the Lambda authorizer"
   value       = aws_apigatewayv2_authorizer.lambda_authorizer.id
 }
+
+# Monitoring Outputs
+output "log_group_arn" {
+  description = "ARN of the API Gateway CloudWatch log group"
+  value       = aws_cloudwatch_log_group.api_gateway_logs.arn
+}
+
+output "access_log_group_arn" {
+  description = "ARN of the API Gateway access CloudWatch log group"
+  value       = aws_cloudwatch_log_group.api_gateway_access_logs.arn
+}
+
+output "sns_topic_arn" {
+  description = "ARN of the SNS topic for alerts (if enabled)"
+  value       = var.enable_alerts && var.alert_email != null ? aws_sns_topic.api_gateway_alerts[0].arn : null
+}
+
+output "cloudwatch_alarms" {
+  description = "Map of CloudWatch alarm ARNs"
+  value = var.enable_alerts && var.alert_email != null ? {
+    "4xx_errors"         = aws_cloudwatch_metric_alarm.api_gateway_4xx_errors[0].arn
+    "5xx_errors"         = aws_cloudwatch_metric_alarm.api_gateway_5xx_errors[0].arn
+    "high_latency"       = aws_cloudwatch_metric_alarm.api_gateway_high_latency[0].arn
+    "integration_errors" = aws_cloudwatch_metric_alarm.api_gateway_integration_errors[0].arn
+  } : {}
+}

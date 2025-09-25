@@ -177,6 +177,38 @@ terraform apply
 | `stage_arn` | The default stage ARN |
 | `stage_domain_name` | Domain name of the stage |
 | `authorizer_id` | The ID of the Lambda authorizer |
+| `log_group_arn` | CloudWatch log group ARN for execution logs |
+| `access_log_group_arn` | CloudWatch log group ARN for access logs |
+| `sns_topic_arn` | SNS topic ARN for alerts (if enabled) |
+| `cloudwatch_alarms` | Map of CloudWatch alarm ARNs (if enabled) |
+
+## Monitoring and Alerting
+
+The API Gateway includes comprehensive monitoring capabilities with CloudWatch logs and configurable email alerts. See [monitoring-README.md](./docs/MONITORING-README.md) for detailed documentation.
+
+### Key Features
+
+- **CloudWatch Logs**: Separate log groups for execution and access logs
+- **Email Alerts**: Configurable notifications for errors and performance issues  
+- **Error Monitoring**: Alarms for 4xx, 5xx, and integration errors
+- **Performance Monitoring**: High latency detection
+- **Flexible Configuration**: Enable/disable alerts and customize thresholds
+
+### Quick Setup
+
+```hcl
+# Enable monitoring with email alerts
+enable_alerts = true
+alert_email   = "alerts@yourcompany.com"
+
+# Configure logging
+logging_level      = "ERROR"
+log_retention_days = 14
+
+# Customize alert thresholds (optional)
+error_5xx_threshold  = 5
+latency_threshold_ms = 5000
+```
 
 ## Usage Examples
 
@@ -211,14 +243,9 @@ certificate_arn = "arn:aws:acm:region:account:certificate/cert-id"
 
 - All `/s3-files` routes require authorization via the Lambda authorizer
 - CORS is configured to allow all origins (modify as needed for production)
-- API Gateway automatically creates CloudWatch logs for monitoring
+- Comprehensive monitoring and alerting for security events
 
-## Monitoring
-
-The API Gateway includes:
-- CloudWatch metrics for API performance
-- Default throttling limits (configurable)
-- Integration with AWS X-Ray for tracing (can be enabled)
+> **Note**: The old basic monitoring section has been replaced with comprehensive monitoring capabilities. See the [Monitoring and Alerting](#monitoring-and-alerting) section above for details.
 
 ## Troubleshooting
 

@@ -114,3 +114,25 @@ api_routes = {
   #   ]
   # }
 }
+
+# Monitoring Configuration
+log_retention_days           = 14
+logging_level               = "ERROR"
+data_trace_enabled          = false
+detailed_metrics_enabled    = true
+
+# Alert Configuration
+enable_alerts = false
+alert_email   = "alerts@example.com"
+
+# Alert Thresholds
+error_4xx_threshold           = 10
+error_5xx_threshold           = 5
+integration_error_threshold   = 3
+latency_threshold_ms         = 5000
+
+# Alarm Evaluation Periods
+error_alarm_evaluation_periods   = 2
+error_alarm_period               = 300
+latency_alarm_evaluation_periods = 2
+latency_alarm_period             = 300

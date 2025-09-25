@@ -107,3 +107,92 @@ variable "api_routes" {
     }
   }
 }
+
+# Monitoring Variables
+variable "log_retention_days" {
+  description = "Number of days to retain CloudWatch logs"
+  type        = number
+  default     = 14
+}
+
+variable "logging_level" {
+  description = "Logging level for API Gateway (OFF, ERROR, INFO)"
+  type        = string
+  default     = "ERROR"
+  validation {
+    condition     = contains(["OFF", "ERROR", "INFO"], var.logging_level)
+    error_message = "Logging level must be OFF, ERROR, or INFO."
+  }
+}
+
+variable "data_trace_enabled" {
+  description = "Enable data trace logging for API Gateway"
+  type        = bool
+  default     = false
+}
+
+variable "detailed_metrics_enabled" {
+  description = "Enable detailed metrics for API Gateway"
+  type        = bool
+  default     = true
+}
+
+variable "enable_alerts" {
+  description = "Enable CloudWatch alarms and email alerts"
+  type        = bool
+  default     = false
+}
+
+variable "alert_email" {
+  description = "Email address to send alerts to (required if enable_alerts is true)"
+  type        = string
+  default     = null
+}
+
+variable "error_4xx_threshold" {
+  description = "Threshold for 4xx error alarm"
+  type        = number
+  default     = 10
+}
+
+variable "error_5xx_threshold" {
+  description = "Threshold for 5xx error alarm"
+  type        = number
+  default     = 5
+}
+
+variable "integration_error_threshold" {
+  description = "Threshold for integration error alarm"
+  type        = number
+  default     = 3
+}
+
+variable "latency_threshold_ms" {
+  description = "Threshold for latency alarm in milliseconds"
+  type        = number
+  default     = 5000
+}
+
+variable "error_alarm_evaluation_periods" {
+  description = "Number of evaluation periods for error alarms"
+  type        = number
+  default     = 2
+}
+
+variable "error_alarm_period" {
+  description = "Period in seconds for error alarm evaluation"
+  type        = number
+  default     = 300
+}
+
+variable "latency_alarm_evaluation_periods" {
+  description = "Number of evaluation periods for latency alarms"
+  type        = number
+  default     = 2
+}
+
+variable "latency_alarm_period" {
+  description = "Period in seconds for latency alarm evaluation"
+  type        = number
+  default     = 300
+}
