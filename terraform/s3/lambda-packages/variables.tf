@@ -1,7 +1,7 @@
 variable "region" {
   description = "The AWS region to create the S3 bucket in."
   type        = string
-  default     = "eu-west-1"
+  default     = "eu-west-2"
 }
 
 variable "environment" {
@@ -42,4 +42,10 @@ variable "tags" {
     Environment = "dev"
     ManagedBy   = "terraform"
   }
+}
+
+variable "create_access_groups" {
+  description = "Whether to create IAM groups for accessing the S3 bucket (developer and devops groups)."
+  type        = bool
+  default     = true
 }
