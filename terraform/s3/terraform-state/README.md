@@ -1,6 +1,14 @@
-# Terraform Root Module for S3 Bucket (Terraform State)
+# Terraform State S3 Bucket
 
-This module deploys an S3 bucket for storing Terraform state using the [terraform-aws-modules/s3-bucket/aws](https://github.com/terraform-aws-modules/terraform-aws-s3-bucket) module.
+This Terraform module creates an S3 bucket for storing Terraform state files with encryption, versioning, and state locking capabilities for secure remote state management.
+
+> 📖 **Part of**: [S-Imperatives Infrastructure as Code](../../../README.md)  
+> 🗄️ **Parent Module**: [S3 Storage Configuration](../README.md)  
+> 🚀 **Deployment**: [Automation Scripts](../../../bin/README.md)
+
+## Overview
+
+This module deploys an S3 bucket for storing Terraform state using the [terraform-aws-modules/s3-bucket/aws](https://github.com/terraform-aws-modules/terraform-aws-s3-bucket) module with enterprise-grade security and reliability features.
 
 ## Usage
 

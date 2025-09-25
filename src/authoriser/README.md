@@ -1,10 +1,16 @@
 # API Gateway Lambda Authorizer
 
-This is a starter Lambda authorizer for use with AWS API Gateway. It validates incoming requests and returns an IAM policy that allows or denies access to API Gateway resources.
+This is a Lambda authorizer for use with AWS API Gateway. It validates incoming requests and returns an IAM policy that allows or denies access to API Gateway resources.
+
+> 📖 **Part of**: [S-Imperatives Infrastructure as Code](../../README.md)  
+> 🏗️ **Infrastructure**: [Authorizer Lambda Terraform Module](../../terraform/lambda/authoriser/README.md)  
+> 🚀 **Deployment**: [Automation Scripts](../../bin/README.md)
 
 ## Overview
 
 The Lambda authorizer is invoked by API Gateway before your API methods are executed. It receives an authorization token (typically from the `Authorization` header) and returns an IAM policy that determines whether the request should be allowed or denied.
+
+This authorizer is designed to work with the [S3 Files API](../s3-files/README.md) and is deployed as part of the complete [API Gateway infrastructure](../../terraform/api-gateway/README.md).
 
 ## Files
 

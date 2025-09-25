@@ -2,6 +2,11 @@
 
 This Terraform module creates an HTTP API Gateway using the `terraform-aws-apigateway-v2` module. The API Gateway provides endpoints for S3 file operations with Lambda authorizer integration.
 
+> 📖 **Part of**: [S-Imperatives Infrastructure as Code](../../README.md)  
+> 🔐 **Authorization**: [Authorizer Lambda](../lambda/authoriser/README.md)  
+> 📁 **Backend**: [S3 Files Lambda](../lambda/s3-files/README.md)  
+> 🚀 **Deployment**: [Automation Scripts](../../bin/README.md)
+
 ## Architecture
 
 The API Gateway includes:

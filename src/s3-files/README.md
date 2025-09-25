@@ -2,6 +2,11 @@
 
 A Node.js Lambda function for performing CRUD operations on files stored in Amazon S3. This function provides a unified interface for reading, writing, listing, deleting, and checking the existence of files in an S3 bucket.
 
+> 📖 **Part of**: [S-Imperatives Infrastructure as Code](../../README.md)  
+> 🏗️ **Infrastructure**: [S3 Files Lambda Terraform Module](../../terraform/lambda/s3-files/README.md)  
+> 🚀 **Deployment**: [Automation Scripts](../../bin/README.md)  
+> 🔐 **Security**: [API Authorizer](../authoriser/README.md)
+
 ## Features
 
 - **Read Files**: Download and read file contents from S3

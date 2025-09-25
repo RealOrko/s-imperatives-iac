@@ -1,6 +1,10 @@
 # Lambda Packages S3 Bucket
 
-This Terraform configuration creates an S3 bucket for storing Lambda package artifacts with IAM-based access control.
+This Terraform module creates an S3 bucket for storing Lambda function deployment packages (ZIP files) with IAM-based access control and lifecycle management.
+
+> 📖 **Part of**: [S-Imperatives Infrastructure as Code](../../../README.md)  
+> 🗄️ **Parent Module**: [S3 Storage Configuration](../README.md)  
+> 🚀 **Deployment**: [Automation Scripts](../../../bin/README.md)
 
 ## Features
 
