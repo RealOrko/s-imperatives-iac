@@ -22,10 +22,20 @@ output "devops_group_arn" {
 # IAM Policy outputs
 output "developer_policy_arn_s3" {
   description = "The ARN of the developer IAM policy for S3."
-  value       = var.create_access_groups ? aws_iam_policy.developer_policy[0].arn : null
+  value       = var.create_access_groups ? aws_iam_policy.developer_policy_s3[0].arn : null
 }
 
 output "devops_policy_arn_s3" {
   description = "The ARN of the devops IAM policy for S3."
-  value       = var.create_access_groups ? aws_iam_policy.devops_policy[0].arn : null
+  value       = var.create_access_groups ? aws_iam_policy.devops_policy_s3[0].arn : null
+}
+
+output "lambda_authoriser_role_arn" {
+  description = "The ARN of the Lambda authoriser IAM role."
+  value       = aws_iam_role.lambda_authoriser_role.arn
+}
+
+output "lambda_s3_files_role_arn" {
+  description = "The ARN of the Lambda s3-files IAM role."
+  value       = aws_iam_role.lambda_s3_files_role.arn
 }

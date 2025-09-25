@@ -24,45 +24,5 @@ module "s3_bucket" {
   tags = var.tags
 }
 
-# S3 bucket policy
-resource "aws_s3_bucket_policy" "s3_bucket_policy" {
-  bucket = module.s3_bucket.s3_bucket_id
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid       = "DeveloperReadOnly"
-        Effect    = "Allow"
-        Principal = {
-          AWS = aws_iam_group.developers.arn
-        }
-        Action = [
-          "s3:GetObject",
-          "s3:ListBucket"
-        ]
-        Resource = [
-          aws_s3_bucket.example.arn,
-          "${aws_s3_bucket.example.arn}/*"
-        ]
-      },
-      {
-        Sid       = "DevOpsReadWrite"
-        Effect    = "Allow"
-        Principal = {
-          AWS = aws_iam_group.devops.arn
-        }
-        Action = [
-          "s3:GetObject",
-          "s3:PutObject",
-          "s3:DeleteObject",
-          "s3:ListBucket"
-        ]
-        Resource = [
-          aws_s3_bucket.example.arn,
-          "${aws_s3_bucket.example.arn}/*"
-        ]
-      }
-    ]
-  })
-}
+# Access control is handled via IAM group policies in the iam module
+# S3 bucket policies don't support IAM groups as principals directly

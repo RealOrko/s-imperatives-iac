@@ -7,7 +7,7 @@ variable "region" {
 variable "bucket_name" {
   description = "The name of the S3 bucket."
   type        = string
-  default     = "si-iac-terraform-state"
+  default     = "si-iac-terraform-state-store"
 }
 
 variable "force_destroy" {

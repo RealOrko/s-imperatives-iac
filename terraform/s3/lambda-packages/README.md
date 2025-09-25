@@ -13,7 +13,7 @@ This Terraform configuration creates an S3 bucket for storing Lambda package art
 ## Backend Configuration
 
 This configuration uses S3 for remote state storage with the following settings:
-- **Bucket**: `si-iac-terraform-state`
+- **Bucket**: `si-iac-terraform-state-store`
 - **Key**: `dev/lambda-packages/terraform.tfstate`
 - **Region**: `eu-west-2`
 

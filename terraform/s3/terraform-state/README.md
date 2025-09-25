@@ -21,7 +21,7 @@ terraform apply
 ```
 
 ## Variables
-- `bucket_name`: Name of the S3 bucket (default: `si-iac-terraform-state`)
+- `bucket_name`: Name of the S3 bucket (default: `si-iac-terraform-state-store`)
 - `force_destroy`: Force destroy bucket (default: `false`)
 - `versioning_enabled`: Enable versioning (default: `true`)
 - `tags`: Tags to apply (default: see `variables.tf`)

@@ -9,6 +9,6 @@ pushd $PWD/terraform/iam
     terraform fmt
     terraform init -backend-config="envs/${ENVIRONMENT}.hcl"
     terraform plan 
-    #terraform apply -auto-approve
+    terraform apply -auto-approve
 
 popd 
