@@ -8,4 +8,4 @@ export $(cat .env | xargs)
 . $PWD/bin/s3-lambda-packages.sh
 . $PWD/bin/lambda-authoriser.sh
 . $PWD/bin/lambda-s3-files.sh
-
+. $PWD/bin/api-gateway.sh
