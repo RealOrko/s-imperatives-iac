@@ -20,6 +20,9 @@ resource "aws_s3_object" "lambda_code" {
   etag   = data.archive_file.lambda_zip.output_md5
 
   depends_on = [data.archive_file.lambda_zip]
+  lifecycle {
+    ignore_changes = [key] # Prevents recreation on code updates
+  }
 }
 
 # Define the Lambda function
@@ -34,7 +37,7 @@ resource "aws_lambda_function" "lambda" {
   depends_on = [aws_s3_object.lambda_code]
 
   lifecycle {
-    ignore_changes = [ s3_key ] # Prevents recreation on code updates
+    ignore_changes = [s3_key] # Prevents recreation on code updates
   }
 }
 
