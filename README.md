@@ -57,6 +57,9 @@ This project creates a complete serverless file management system with the follo
 
 ## Component Documentation
 
+### Release Management
+- [🚀 Release Process](RELEASES.md) - Release management, deployment, and rollback procedures
+
 ### Automation Scripts
 - [📁 Deployment Scripts](bin/README.md) - Automated deployment and management scripts
 
